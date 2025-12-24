@@ -10,6 +10,9 @@ AI 기반 IDE와 코딩 에이전트를 위한 프로젝트별 커스텀 코딩 
 ### [code-formatter](./skills/code-formatter)
 코드베이스 분석을 통해 언어별 코드 포매팅 설정 파일(ESLint, Prettier, EditorConfig 등)을 자동 생성합니다.
 
+### [git-conventional-commits](./skills/git-conventional-commits)
+git diff 분석과 코드베이스 컨텍스트를 기반으로 Conventional Commits 규격에 맞는 커밋 메시지를 자동 생성합니다.
+
 ## Usage
 
 각 스킬의 디렉토리에서 `SKILL.md` 파일을 참조하여 사용 방법을 확인하세요.
