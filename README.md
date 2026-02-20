@@ -13,6 +13,9 @@ AI 기반 IDE와 코딩 에이전트를 위한 프로젝트별 커스텀 코딩 
 ### [git-conventional-commits](./skills/git-conventional-commits)
 git diff 분석과 코드베이스 컨텍스트를 기반으로 Conventional Commits 규격에 맞는 커밋 메시지를 자동 생성합니다.
 
+### [plan-codex-review](./skills/plan-codex-review)
+Claude Code 플랜 파일을 OpenAI Codex CLI로 전송하여 기술적 타당성, 보안, 성능, 테스트 전략 등 다각도로 리뷰하고 개선합니다.
+
 ## Usage
 
 각 스킬의 디렉토리에서 `SKILL.md` 파일을 참조하여 사용 방법을 확인하세요.

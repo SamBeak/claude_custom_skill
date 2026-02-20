@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(git ls-tree:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "mcp__filesystem__read_text_file",
+      "WebFetch(domain:developers.openai.com)",
+      "WebSearch"
     ]
   }
 }
