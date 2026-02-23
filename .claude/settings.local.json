@@ -5,7 +5,9 @@
       "Bash(git checkout:*)",
       "mcp__filesystem__read_text_file",
       "WebFetch(domain:developers.openai.com)",
-      "WebSearch"
+      "WebSearch",
+      "mcp__filesystem__directory_tree",
+      "Bash(cd:*)"
     ]
   }
 }
