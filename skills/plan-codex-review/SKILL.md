@@ -85,7 +85,7 @@ codex --version
 # If fails → show installation instructions and stop
 
 # 2. Check authentication (attempt a minimal exec)
-codex exec -s read-only --full-auto -m o4-mini - <<< "echo hello"
+codex exec -s read-only --full-auto -m gpt-5.3-codex - <<< "echo hello"
 # If auth error → show authentication instructions and stop
 ```
 
@@ -193,11 +193,8 @@ PROMPT_FILE="/tmp/codex-plan-review-prompt-${TIMESTAMP}.md"
 ### Execution
 
 ```bash
-# Default execution (read-only sandbox, full-auto mode)
-codex exec -s read-only --full-auto - < /tmp/codex-plan-review-prompt-{timestamp}.md
-
-# With specific model
-codex exec -s read-only --full-auto -m o4-mini - < /tmp/codex-plan-review-prompt-{timestamp}.md
+# Always use the best latest model (gpt-5.3-codex)
+codex exec -s read-only --full-auto -m gpt-5.3-codex - < /tmp/codex-plan-review-prompt-{timestamp}.md
 ```
 
 **Key flags:**
@@ -210,7 +207,7 @@ codex exec -s read-only --full-auto -m o4-mini - < /tmp/codex-plan-review-prompt
 Use a 5-minute timeout (300 seconds). If exceeded, inform the user and suggest retrying with a lighter model.
 
 ```bash
-timeout 300 codex exec -s read-only --full-auto - < /tmp/codex-plan-review-prompt-{timestamp}.md
+timeout 300 codex exec -s read-only --full-auto -m gpt-5.3-codex - < /tmp/codex-plan-review-prompt-{timestamp}.md
 ```
 
 ## Output Parsing and Merging
@@ -292,8 +289,8 @@ timeout 300 codex exec -s read-only --full-auto - < /tmp/codex-plan-review-promp
 | 2 | Authentication not configured | Codex exec returns auth error | Show authentication options, stop |
 | 3 | No plan file found | No `.md` files in plans directories | Ask user for path or suggest creating a plan |
 | 4 | Plan file is empty | File content is blank/whitespace | Warn and stop |
-| 5 | Execution timeout | Command exceeds 5 minutes | Suggest lighter model or narrower scope |
-| 6 | Empty Codex output | stdout is blank | Suggest different model, retry |
+| 5 | Execution timeout | Command exceeds 5 minutes | Suggest narrower scope or retry |
+| 6 | Empty Codex output | stdout is blank | Retry with gpt-5.3-codex |
 | 7 | Unexpected output format | Section headers not found | Append raw output with format warning |
 | 8 | File write failure | Write/Edit tool error | Print review to console as fallback |
 | 9 | Multiple plan files | More than one `.md` found | Use `AskUserQuestion` for user selection |
@@ -330,7 +327,7 @@ Complete step-by-step workflow (runs automatically after plan mode exits):
    └─ Write to /tmp/codex-plan-review-prompt-{timestamp}.md
 
 5. Execute Codex CLI
-   └─ codex exec -s read-only --full-auto - < {prompt_file}
+   └─ codex exec -s read-only --full-auto -m gpt-5.3-codex - < {prompt_file}
 
 6. Parse Codex output
    ├─ Look for section headers
@@ -357,19 +354,20 @@ Complete step-by-step workflow (runs automatically after plan mode exits):
 
 ## Model Selection
 
+**항상 최고 성능의 최신 모델을 사용합니다.**
+
 | Model | Speed | Depth | Cost | Use Case |
 |-------|-------|-------|------|----------|
-| Default | Medium | Deep | Medium | Comprehensive review |
-| o4-mini | Fast | Moderate | Low | Quick review, iteration |
-| o3 | Slow | Very Deep | High | Critical plans, final review |
+| **gpt-5.3-codex** | Medium | Very Deep | High | **기본값 - 모든 리뷰에 사용** |
+| gpt-5.3-codex-spark | Very Fast | Deep | Medium | 실시간 빠른 리뷰 (사용자 요청 시) |
 
-For auto-triggered reviews, use the Codex CLI default model. If the user manually requests a specific model, honor that choice.
+모든 자동/수동 리뷰에서 `-m gpt-5.3-codex`를 명시적으로 지정합니다. 사용자가 다른 모델을 명시적으로 요청하는 경우에만 변경합니다.
 
 ## Best Practices
 
 1. **Automatic review** - Let the auto-trigger handle reviews after every plan mode exit
 2. **Iterate** - Re-run after addressing critical findings
-3. **Use specific models** - Use `o4-mini` for quick checks, default for thorough review
+3. **Always use the best model** - 항상 `gpt-5.3-codex`를 사용하여 최고 품질의 리뷰를 보장
 4. **Preserve context** - Keep the review appended to the plan for reference
 5. **Prioritize findings** - Address Critical and High issues first
 6. **Single perspective mode** - For focused reviews, use single-perspective templates from [references/templates.md](references/templates.md)

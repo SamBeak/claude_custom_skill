@@ -264,32 +264,23 @@ Analyze this plan for:
 
 ## Codex CLI Command Templates
 
-### Default Execution (Read-Only Sandbox)
+### Default Execution (Read-Only Sandbox, Best Model)
 
 ```bash
-codex exec -s read-only --full-auto - < /tmp/codex-plan-review-prompt-{timestamp}.md
-```
-
-### Specific Model
-
-```bash
-# Use o4-mini for faster, cheaper reviews
-codex exec -s read-only --full-auto -m o4-mini - < /tmp/codex-plan-review-prompt-{timestamp}.md
-
-# Use o3 for deeper analysis
-codex exec -s read-only --full-auto -m o3 - < /tmp/codex-plan-review-prompt-{timestamp}.md
+# Always use gpt-5.3-codex (best latest model)
+codex exec -s read-only --full-auto -m gpt-5.3-codex - < /tmp/codex-plan-review-prompt-{timestamp}.md
 ```
 
 ### With Timeout
 
 ```bash
-timeout 300 codex exec -s read-only --full-auto - < /tmp/codex-plan-review-prompt-{timestamp}.md
+timeout 300 codex exec -s read-only --full-auto -m gpt-5.3-codex - < /tmp/codex-plan-review-prompt-{timestamp}.md
 ```
 
 ### Capture Output
 
 ```bash
-codex exec -s read-only --full-auto - < /tmp/codex-plan-review-prompt-{timestamp}.md 2>&1
+codex exec -s read-only --full-auto -m gpt-5.3-codex - < /tmp/codex-plan-review-prompt-{timestamp}.md 2>&1
 ```
 
 ## Merged Plan Output Template
@@ -388,9 +379,9 @@ The format appended to the original plan file after review:
 ⚠️ Codex CLI 실행이 시간 초과되었습니다 (5분).
 
 다음을 시도하세요:
-1. 더 가벼운 모델로 재시도: codex exec -m o4-mini ...
-2. 단일 관점 리뷰로 범위를 줄이세요.
-3. 네트워크 연결을 확인하세요.
+1. 단일 관점 리뷰로 범위를 줄여서 재시도하세요.
+2. 네트워크 연결을 확인하세요.
+3. 재시도: codex exec -s read-only --full-auto -m gpt-5.3-codex ...
 ```
 
 ### Empty Codex Output
@@ -399,9 +390,9 @@ The format appended to the original plan file after review:
 ⚠️ Codex CLI에서 출력이 없습니다.
 
 다음을 시도하세요:
-1. 다른 모델로 재시도하세요 (예: -m o4-mini).
-2. 프롬프트를 단순화하세요.
-3. Codex CLI 상태를 확인하세요: codex --version
+1. 프롬프트를 단순화하세요.
+2. Codex CLI 상태를 확인하세요: codex --version
+3. 재시도: codex exec -s read-only --full-auto -m gpt-5.3-codex ...
 ```
 
 ### Unexpected Output Format
